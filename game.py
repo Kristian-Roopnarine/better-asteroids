@@ -31,7 +31,11 @@ class Game:
         drawable = pygame.sprite.Group()
         Player.containers = (updatable, drawable)
         player = Player(
-            self.display_w / 2, self.display_h / 2, self.assets.get("default_ship")
+            self.display_w / 2,
+            self.display_h / 2,
+            self.assets.get("default_ship"),
+            # x min, y min, x max, y max
+            boundary=[0, 0, self.display_w, self.display_h],
         )
 
         while self.running:
