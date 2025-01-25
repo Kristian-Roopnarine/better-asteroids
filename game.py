@@ -1,5 +1,6 @@
 import pygame
 from asset_handler import load_asset
+from player import Player
 
 BACKGROUND_COLOR = "#0d001a"
 
@@ -18,18 +19,36 @@ class Game:
         self.assets = {"default_ship": load_asset("default_ship.png")}
         pygame.display.set_caption("New Space Game")
 
+    def initialize_groups(self):
+        # why does this not work?
+        updatable = pygame.sprite.Group()
+        drawable = pygame.sprite.Group()
+        Player.contaiers = (updatable, drawable)
+        return updatable, drawable
+
     def run(self):
+        updatable = pygame.sprite.Group()
+        drawable = pygame.sprite.Group()
+        Player.containers = (updatable, drawable)
+        player = Player(
+            self.display_w / 2, self.display_h / 2, self.assets.get("default_ship")
+        )
+
         while self.running:
+            self.screen.fill(BACKGROUND_COLOR)
+            self.display.fill(BACKGROUND_COLOR)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                     pygame.quit()
-            self.screen.fill(BACKGROUND_COLOR)
-            self.display.fill(BACKGROUND_COLOR)
-            self.display.blit(
-                self.assets.get("default_ship"),
-                (self.display_w / 2, self.display_h / 2),
-            )
+
+            for u in updatable:
+                u.update(self.dt)
+
+            for d in drawable:
+                d.draw(self.display)
+
             self.screen.blit(
                 pygame.transform.scale(self.display, self.screen.get_size()), (0, 0)
             )
