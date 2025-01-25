@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         y,
         sprite: pygame.Surface,
         move_speed=DEFAULT_PLAYER_SPEED,
-        boundary=None | List[pygame.Vector2],
+        boundary=None | List[int],
     ):
         if hasattr(self, "containers"):
             super().__init__(self.containers)
